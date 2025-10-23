@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Dashboard | Campus Canteen</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="bg-green-50 min-h-screen"
+      style="background-image: url('{{ url_for('static', filename='book3.jpg') }}');
+             background-size: cover;
+             background-position: center;
+             background-attachment: fixed;">
+
+  <div class="max-w-6xl mx-auto p-6 bg-white bg-opacity-90 rounded-2xl shadow-2xl mt-10 mb-10">
+
+
+    <header class="text-center mb-8">
+      <h1 class="text-4xl font-extrabold text-green-700">Staff Dashboard</h1>
+      <p class="text-lg text-gray-600 mt-1">Welcome, {{ user.username }}!</p>
+      <a href="{{ url_for('logout_user') }}" class="text-red-600 underline hover:text-red-800 text-sm">Logout</a>
+    </header>
+
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div class="bg-green-600 text-white rounded-2xl shadow-lg p-6 text-center">
+        <h2 class="text-xl font-semibold mb-2">Today's Profit</h2>
+        <p class="text-3xl font-bold">₱{{ daily_profit }}</p>
+      </div>
+      <div class="bg-yellow-400 text-green-900 rounded-2xl shadow-lg p-6 text-center">
+        <h2 class="text-xl font-semibold mb-2">This Month's Profit</h2>
+        <p class="text-3xl font-bold">₱{{ monthly_profit }}</p>
+      </div>
+    </div>
+
+
+    <section class="bg-white p-6 rounded-2xl shadow-lg mb-8">
+      <h2 class="text-2xl font-bold text-green-700 border-b pb-2 mb-4">Add New Product</h2>
+      <form action="{{ url_for('add_product') }}" method="POST" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <input type="text" name="name" placeholder="Product Name" required class="p-3 border rounded-xl focus:ring-2 focus:ring-green-400">
+        <input type="number" name="price" placeholder="Price (₱)" step="0.01" required class="p-3 border rounded-xl focus:ring-2 focus:ring-green-400">
+        <input type="number" name="cost" placeholder="Cost (₱)" step="0.01" required class="p-3 border rounded-xl focus:ring-2 focus:ring-green-400">
+        <input type="number" name="stock" placeholder="Stock Quantity" required class="p-3 border rounded-xl focus:ring-2 focus:ring-green-400">
+        <div class="md:col-span-4 flex justify-end">
+          <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded-xl hover:bg-green-700 shadow-lg transition">Add Product</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- AVAILABLE PRODUCTS -->
+    <section class="bg-white p-6 rounded-2xl shadow-lg mb-8">
+      <h2 class="text-2xl font-bold text-green-700 border-b pb-2 mb-4">Available Products</h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full border border-gray-300 rounded-xl overflow-hidden">
+          <thead class="bg-green-600 text-white">
+            <tr>
+              <th class="px-4 py-2 text-left">Product Name</th>
+              <th class="px-4 py-2 text-left">Price (₱)</th>
+              <th class="px-4 py-2 text-left">Cost (₱)</th>
+              <th class="px-4 py-2 text-left">Stock</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white">
+            {% for p in products %}
+            <tr class="border-t hover:bg-green-50 transition">
+              <td class="px-4 py-2">{{ p.name }}</td>
+              <td class="px-4 py-2">{{ p.price }}</td>
+              <td class="px-4 py-2">{{ p.cost }}</td>
+              <td class="px-4 py-2">{{ p.stock }}</td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="4" class="text-center text-gray-400 py-4 italic">No products added yet.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ORDERS TODAY -->
+    <section class="bg-white p-6 rounded-2xl shadow-lg">
+      <h2 class="text-2xl font-bold text-green-700 border-b pb-2 mb-4">Orders Today</h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full border border-gray-300 rounded-xl overflow-hidden">
+          <thead class="bg-yellow-400 text-green-900">
+            <tr>
+              <th class="px-4 py-2 text-left">Order ID</th>
+              <th class="px-4 py-2 text-left">Product</th>
+              <th class="px-4 py-2 text-left">Quantity</th>
+              <th class="px-4 py-2 text-left">Total Price (₱)</th>
+              <th class="px-4 py-2 text-left">Time</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white">
+            {% for o in orders %}
+            <tr class="border-t hover:bg-yellow-50 transition">
+              <td class="px-4 py-2">{{ o.id }}</td>
+              <td class="px-4 py-2">{{ o.product_name }}</td>
+              <td class="px-4 py-2">{{ o.quantity }}</td>
+              <td class="px-4 py-2">{{ o.total_price }}</td>
+              <td class="px-4 py-2">{{ o.order_time.strftime('%I:%M %p') }}</td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="5" class="text-center text-gray-400 py-4 italic">No orders yet today.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+
+</body>
+</html>
+</title>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: #f9fafb;
+  color: #333;
+  scroll-behavior: smooth;
+}
+
+/* LOGIN PAGE */
+.login-bg {
+  background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)),
+              url("book3.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
+
+.login-container {
+  max-width: 400px;
+  margin: 8% auto;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+.login-container h1 {
+  color: #16a34a;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+.login-container input:focus {
+  border-color: #16a34a;
+  outline: none;
+  box-shadow: 0 0 6px rgba(22, 163, 74, 0.3);
+}
+
+.login-container button {
+  background-color: #16a34a;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  width: 100%;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.login-container button:hover {
+  background-color: #15803d;
+}
+
+.error-message {
+  color: red;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+/* TABLES & GENERAL STYLING */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: left;
+  padding: 10px 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #16a34a;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .login-container { margin-top: 15%; }
+  table th, table td { font-size: 14px; }
+}
