@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCash Payment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .payment-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .qr-code-container {
+            background: #f9fafb;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+            border: 2px solid #047857;
+        }
+        .qr-code-image {
+            max-width: 300px;
+            margin: 20px auto;
+            display: block;
+        }
+        .payment-instructions {
+            background: #fef3c7;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #f59e0b;
+        }
+        .payment-instructions h3 {
+            color: #d97706;
+            margin-bottom: 10px;
+        }
+        .payment-instructions ol {
+            text-align: left;
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+        .payment-instructions li {
+            margin: 8px 0;
+            color: #374151;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <h1 style="color: #047857; margin-bottom: 10px;">💳 GCash Payment</h1>
+        <p style="color: #6b7280; margin-bottom: 30px;">Scan the QR code below to complete your payment</p>
+
+        <div class="qr-code-container">
+            <h2 style="color: #047857;">Scan to Pay</h2>
+            <img src="data:image/png;base64,{{ qr_code }}" alt="GCash QR Code" class="qr-code-image">
+
+            <div style="margin-top: 20px;">
+                <p style="font-size: 1.1rem; color: #374151;"><strong>Order #:</strong> {{ sale.id }}</p>
+                <p style="font-size: 1.5rem; color: #047857; font-weight: 700; margin-top: 10px;">
+                    Amount: ₱{{ "%.2f"|format(sale.total_amount) }}
+                </p>
+            </div>
+        </div>
+
+        <div class="payment-instructions">
+            <h3>📱 How to Pay with GCash</h3>
+            <ol>
+                <li>Open your GCash app</li>
+                <li>Tap "Scan QR"</li>
+                <li>Point your camera at the QR code above</li>
+                <li>Confirm the payment amount</li>
+                <li>Enter your MPIN to complete</li>
+            </ol>
+        </div>
+
+        <div style="margin-top: 30px;">
+            <p style="color: #6b7280; margin-bottom: 15px;">After payment, click below to view your receipt</p>
+            <a href="{{ url_for('student_receipt', sale_id=sale.id) }}" class="btn btn-primary" style="padding: 15px 30px;">
+                View Receipt
+            </a>
+            <a href="{{ url_for('student_order') }}" class="btn btn-secondary" style="padding: 15px 30px; margin-left: 10px;">
+                New Order
+            </a>
+        </div>
+
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+            <p style="font-size: 0.9rem; color: #6b7280;">
+                ⚠️ Note: This is a demonstration QR code. In production, this would connect to your actual GCash merchant account.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Canteen Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="home-container">
+        <header class="header">
+            <h1>🍽️ Campus Canteen Management System</h1>
+            <p class="tagline">Efficient · Fast · Reliable</p>
+        </header>
+
+        <nav class="nav-menu">
+            <a href="{{ url_for('home') }}" class="nav-link active">Home</a>
+            <a href="#about" class="nav-link">About</a>
+            <a href="#contact" class="nav-link">Contact</a>
+        </nav>
+
+        <main class="main-content">
+            <section class="welcome-section">
+                <h2>Welcome to Our Canteen System</h2>
+                <p>A modern solution for managing canteen operations, inventory, and sales.</p>
+            </section>
+
+            <section class="login-options">
+                <div class="login-card student-card">
+                    <div class="card-icon">🎓</div>
+                    <h3>Student Portal</h3>
+                    <p>Order food and beverages</p>
+                    <div class="card-buttons">
+                        <a href="{{ url_for('student_order') }}" class="btn btn-primary btn-large">Order Now</a>
+                    </div>
+                </div>
+
+                <div class="login-card staff-card">
+                    <div class="card-icon">👥</div>
+                    <h3>Staff/Admin Portal</h3>
+                    <p>Manage products, staff, and view reports</p>
+                    <div class="card-buttons">
+                        <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+                        <a href="{{ url_for('signup') }}" class="btn btn-secondary">Sign Up</a>
+                    </div>
+                </div>
+            </section>
+
+            <section id="about" class="about-section">
+                <h2>About the System</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <h4>📦 Inventory Management</h4>
+                        <p>Track stock levels and get low stock alerts</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>💳 Multiple Payment Options</h4>
+                        <p>Accept cash and GCash payments with QR codes</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>📊 Sales Reports</h4>
+                        <p>View detailed sales analytics and history</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>🔒 Secure Access</h4>
+                        <p>Role-based authentication for admin and staff</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>🛒 Easy Student Ordering</h4>
+                        <p>Students can order without logging in</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>📱 QR Code Payments</h4>
+                        <p>Instant GCash payment with QR scanning</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="contact" class="contact-section">
+                <h2>Contact Us</h2>
+                <p>Campus Canteen Management</p>
+                <p>📧 Email: canteen@campus.edu</p>
+                <p>📞 Phone: (123) 456-7890</p>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 Campus Canteen Management System. All rights reserved.</p>
+        </footer>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>

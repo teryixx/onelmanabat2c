@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>📊 Sales History</h1>
+            <div class="user-info">
+                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>All Transactions</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Receipt #</th>
+                            <th>Staff</th>
+                            <th>Customer</th>
+                            <th>Payment</th>
+                            <th>Amount</th>
+                            <th>Date & Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sale in sales %}
+                        <tr>
+                            <td>#{{ sale.id }}</td>
+                            <td>{{ sale.staff_name or 'Student Order' }}</td>
+                            <td>{{ sale.student_name or 'Walk-in' }}</td>
+                            <td>{{ sale.payment_method }}</td>
+                            <td>₱{{ "%.2f"|format(sale.total_amount) }}</td>
+                            <td>{{ sale.created_at[:16] }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: #6b7280;">No sales recorded yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

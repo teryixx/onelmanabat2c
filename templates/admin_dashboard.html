@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>👨‍💼 Admin Dashboard</h1>
+            <div class="user-info">
+                <div class="username">{{ session.username }}</div>
+                <a href="{{ url_for('logout') }}" class="logout-link">Logout</a>
+            </div>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div style="margin-bottom: 20px;">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card green">
+                <h3>Total Sales</h3>
+                <div class="stat-value">₱{{ "%.2f"|format(total_sales) }}</div>
+            </div>
+            <div class="stat-card yellow">
+                <h3>Today's Sales</h3>
+                <div class="stat-value">₱{{ "%.2f"|format(today_sales) }}</div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); color: white;">
+                <h3>Monthly Sales</h3>
+                <div class="stat-value">₱{{ "%.2f"|format(monthly_sales) }}</div>
+            </div>
+            <div class="stat-card red">
+                <h3>Low Stock Items</h3>
+                <div class="stat-value">{{ low_stock }}</div>
+            </div>
+        </div>
+
+        <!-- Add Product Form -->
+        <div class="content-section">
+            <h2>➕ Add New Product</h2>
+            <form method="POST" action="{{ url_for('add_product') }}">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                    <div class="form-group">
+                        <label>Product Name</label>
+                        <input type="text" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select name="category" required>
+                            <option value="">Select Category</option>
+                            <option value="Food">Food</option>
+                            <option value="Beverages">Beverages</option>
+                            <option value="Snacks">Snacks</option>
+                            <option value="Desserts">Desserts</option>
+                            <option value="Meals">Meals</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Price (₱)</label>
+                        <input type="number" step="0.01" name="price" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Stock Quantity</label>
+                        <input type="number" name="stock" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" name="description">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="margin-top: 15px;">Add Product</button>
+            </form>
+        </div>
+
+        <!-- Products List -->
+        <div class="content-section">
+            <h2>📦 Product Inventory</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Category</th>
+                            <th>Product Name</th>
+                            <th>Price (₱)</th>
+                            <th>Stock</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                        <tr {% if product.stock < 10 %}style="background-color: #fee2e2;"{% endif %}>
+                            <td>{{ product.id }}</td>
+                            <td><span class="product-category">{{ product.category }}</span></td>
+                            <td>{{ product.name }}</td>
+                            <td>₱{{ "%.2f"|format(product.price) }}</td>
+                            <td>
+                                {{ product.stock }}
+                                {% if product.stock < 10 %}<span style="color: red; font-weight: bold;"> ⚠️ LOW</span>{% endif %}
+                            </td>
+                            <td>{{ product.description or '-' }}</td>
+                            <td class="table-actions">
+                                <form method="POST" action="{{ url_for('edit_product', product_id=product.id) }}" style="display: inline;">
+                                    <input type="number" name="stock" value="{{ product.stock }}" style="width: 60px; padding: 4px;">
+                                    <input type="hidden" name="name" value="{{ product.name }}">
+                                    <input type="hidden" name="category" value="{{ product.category }}">
+                                    <input type="hidden" name="price" value="{{ product.price }}">
+                                    <input type="hidden" name="description" value="{{ product.description }}">
+                                    <button type="submit" class="btn btn-warning" style="padding: 4px 8px;">Update</button>
+                                </form>
+                                <a href="{{ url_for('delete_product', product_id=product.id) }}"
+                                   class="btn btn-danger"
+                                   style="padding: 4px 8px;"
+                                   onclick="return confirm('Delete this product?')">Delete</a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="7" style="text-align: center; color: #6b7280;">No products added yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Staff Management -->
+        <div class="content-section">
+            <h2>👥 Staff Management</h2>
+            <form method="POST" action="{{ url_for('add_staff') }}" style="margin-bottom: 30px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="margin-top: 15px;">Add Staff Member</button>
+            </form>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Created At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for staff in staff_members %}
+                        <tr>
+                            <td>{{ staff.id }}</td>
+                            <td>{{ staff.username }}</td>
+                            <td>{{ staff.email }}</td>
+                            <td>
+                                {% if staff.is_active %}
+                                    <span style="color: green; font-weight: bold;">● Active</span>
+                                {% else %}
+                                    <span style="color: red; font-weight: bold;">● Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ staff.created_at[:10] }}</td>
+                            <td>
+                                <a href="{{ url_for('toggle_staff', staff_id=staff.id) }}" class="btn btn-warning" style="padding: 4px 8px;">
+                                    {% if staff.is_active %}Deactivate{% else %}Activate{% endif %}
+                                </a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: #6b7280;">No staff members yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="content-section">
+            <h2>🔗 Quick Actions</h2>
+            <div style="display: flex; gap: 15px;">
+                <a href="{{ url_for('admin_sales') }}" class="btn btn-primary">View Sales History</a>
+                <a href="{{ url_for('home') }}" class="btn btn-secondary">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

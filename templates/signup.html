@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Staff/Admin Login</title>
+    <title>Staff/Admin Sign Up</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="form-container">
-        <h1>👥 Staff/Admin Login</h1>
+        <h1>📝 Create Account</h1>
         <p style="text-align: center; color: #6b7280; margin-bottom: 20px;">
-            Login to access your dashboard
+            Register as Staff or Admin
         </p>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -28,22 +28,34 @@
             </div>
 
             <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="role">Role</label>
+                <select id="role" name="role" required>
+                    <option value="staff">Staff</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
             </div>
 
-            <button type="submit" class="form-submit">Login</button>
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password</label>
+                <input type="password" id="confirm_password" name="confirm_password" required>
+            </div>
+
+            <button type="submit" class="form-submit">Create Account</button>
         </form>
 
         <div class="form-link">
-            <p>Don't have an account? <a href="{{ url_for('signup') }}">Sign Up</a></p>
+            <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
             <p><a href="{{ url_for('home') }}">Back to Home</a></p>
-        </div>
-
-        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
-            <p style="font-size: 0.85rem; color: #6b7280; text-align: center;">
-                Default Admin: username: <strong>admin</strong>, password: <strong>admin123</strong>
-            </p>
         </div>
     </div>
 </body>
